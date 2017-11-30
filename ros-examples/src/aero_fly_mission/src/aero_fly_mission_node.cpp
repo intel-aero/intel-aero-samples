@@ -1,5 +1,5 @@
 /**
-* @file mavros_fly_mission_node.cpp
+* @file aero_fly_mission_node.cpp
 * @brief Demonstration of Flying Waypoint missions using MAVROS
 * @author Shakthi Prashanth M <shakthi.prashanth.m@intel.com>
 * @version 0.0.1
@@ -107,7 +107,7 @@ int main(int argc, char **argv)
     return EXIT_FAILURE;
   }
   // Name of this Application node
-  ros::init(argc, argv, "mavros_flymission");
+  ros::init(argc, argv, "aero_flymission");
 
   ros::NodeHandle nh;
 

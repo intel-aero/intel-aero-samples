@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(mavros_telemetry_simple)
+project(aero_telemetry_simple)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 add_compile_options(-std=c++11 -g)
@@ -25,7 +25,7 @@ include_directories(
 )
 
 add_executable(${PROJECT_NAME}_node
-  src/mavros_telemetry_simple_node.cpp
+  src/aero_telemetry_simple_node.cpp
 )
 
 set_target_properties(${PROJECT_NAME}_node PROPERTIES OUTPUT_NAME node PREFIX "")

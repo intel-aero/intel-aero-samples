@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
-  <name>mavros_offboard_ctrl</name>
-  <version>0.0.1</version>
+  <name>aero_offboard_ctrl</name>
+  <version>0.0.0</version>
   <description>Offboard control of the Aero FC using MAVROS</description>
 
   <maintainer email="shakthi.prashanth.m@intel.com">Shakthi Prashanth</maintainer>

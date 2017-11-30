@@ -1,6 +1,6 @@
 /**
- * @file mavros_offboard_ctrl_node.cpp
- * @brief MAVROS Offboard Control example node, written with mavros version 0.21.2, px4 flight
+ * @file aero_offboard_ctrl_node.cpp
+ * @brief Aero Offboard Control example node, written with mavros version 0.21.2, px4 flight
  * stack and tested in Gazebo SITL & jMAVSIM.
  * Original source code: MAVROS OFFBOARD example from: https://dev.px4.io/en/ros/mavros_offboard.html
  */

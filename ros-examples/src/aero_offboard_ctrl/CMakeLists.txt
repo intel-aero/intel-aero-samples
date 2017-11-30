@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(mavros_offboard_ctrl)
+project(aero_offboard_ctrl)
 
 add_compile_options(-std=c++11)
 
@@ -21,7 +21,7 @@ include_directories(
 )
 
 add_executable(${PROJECT_NAME}_node
-  src/mavros_offboard_ctrl_node.cpp
+  src/aero_offboard_ctrl_node.cpp
 )
 
 set_target_properties(${PROJECT_NAME}_node PROPERTIES OUTPUT_NAME node PREFIX "")
