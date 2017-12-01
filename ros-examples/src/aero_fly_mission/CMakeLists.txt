@@ -44,4 +44,4 @@ target_link_libraries(${PROJECT_NAME}_node
 install(
   PROGRAMS
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-  )
+)

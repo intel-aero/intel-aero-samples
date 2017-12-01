@@ -32,7 +32,8 @@ namespace bpt = boost::property_tree;
 
 bool g_is_home_gps_set = false;
 
-void loadFromQGCPlan(const std::string &qgc_plan_file, mavros_msgs::WaypointPush *wp_list)
+// Parses QGroundControl Waypoint plan into MAVROS Waypoint list.
+void get_wp_list(const std::string& qgc_plan_file, mavros_msgs::WaypointPush* wp_list)
 {
   try
   {
@@ -50,7 +51,7 @@ void loadFromQGCPlan(const std::string &qgc_plan_file, mavros_msgs::WaypointPush
     // NOTE: Unexpected type while reading values will cause an exception.
     bool first = true;
     // FOREACH mission item in the list
-    for (auto &mi : mission_pt.get_child("mission.items"))
+    for (auto& mi : mission_pt.get_child("mission.items"))
     {
       // See http://docs.ros.org/api/mavros_msgs/html/msg/Waypoint.html
       mavros_msgs::Waypoint wp{};
@@ -63,7 +64,7 @@ void loadFromQGCPlan(const std::string &qgc_plan_file, mavros_msgs::WaypointPush
       first = false;
       // Parameters
       std::vector<double> params;
-      for (auto &p : mi.second.get_child("params"))
+      for (auto& p : mi.second.get_child("params"))
         params.push_back(p.second.get<double>(""));
       wp.param1 = params[0];
       wp.param2 = params[1];
@@ -78,7 +79,7 @@ void loadFromQGCPlan(const std::string &qgc_plan_file, mavros_msgs::WaypointPush
     //////////////////////////////////////////////////////////
     // Parse QGC plan ends
   }
-  catch (std::exception const &e)
+  catch (std::exception const& e)
   {
     ROS_ERROR("%s", e.what());
     throw;
@@ -86,20 +87,20 @@ void loadFromQGCPlan(const std::string &qgc_plan_file, mavros_msgs::WaypointPush
 }
 
 //  Callback that gets called periodically from MAVROS notifying FCU state
-void save_current_state_cb(const mavros_msgs::State::ConstPtr &msg, mavros_msgs::State *pCurrentState)
+void save_current_state_cb(const mavros_msgs::State::ConstPtr& msg, mavros_msgs::State* pCurrentState)
 {
   *pCurrentState = *msg;
 }
 
 // Callback that gets called periodically from MAVROS notifying Global Poistion of FCU
-void set_home_gps_cb(const sensor_msgs::NavSatFixConstPtr &msg, sensor_msgs::NavSatFix *pHomeGps)
+void set_home_gps_cb(const sensor_msgs::NavSatFixConstPtr& msg, sensor_msgs::NavSatFix* pHomeGps)
 {
   *pHomeGps = *msg;
   g_is_home_gps_set = true;
   ROS_INFO("Received Home: %lf, %lf, %lf", pHomeGps->latitude, pHomeGps->longitude, pHomeGps->altitude);
 }
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
   if (argc == 1)
   {
@@ -130,9 +131,9 @@ int main(int argc, char **argv)
 
   try
   {
-    loadFromQGCPlan(argv[1], &wp_list);
+    get_wp_list(argv[1], &wp_list);
   }
-  catch (std::exception const &e)
+  catch (std::exception const& e)
   {
     // NOTE: QGC waypointplan (JSON) may contain 'params' valueas 'null';
     // in that case we may get execption. Make sure to keep 'params' values to be 0.

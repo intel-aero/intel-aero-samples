@@ -38,14 +38,14 @@ void watchFlightAltitude()
   }
 }
 
-int main(int argc, char **argv )
+int main(int argc, char** argv)
 {
   ros::init(argc, argv, "aero_takeoff_land");
   ros::NodeHandle nh;
 
-
+  // Thread that watch for change in altitude of Aero.
   boost::thread thread_altitude(watchFlightAltitude);
-  const float ALTITUDE= 488.00;
+  const float ALTITUDE = 488.00;
   const float LATITUDE = 47.3977415;
   const float LONGITUDE = 8.5455937;
   const float MIN_PITCH = 0;
@@ -80,8 +80,8 @@ int main(int argc, char **argv )
     ros::shutdown();
     return -1;
   }
-  sleep(5);
- 
+  sleep(5);  // Let Aero reach takeoff altitude
+
   // land
   ros::ServiceClient land_client = nh.serviceClient<mavros_msgs::CommandTOL>("/mavros/cmd/land");
   mavros_msgs::CommandTOL srv_land{};
@@ -94,7 +94,7 @@ int main(int argc, char **argv )
     return -1;
   }
 
-  sleep(5);
+  sleep(5);  // Let Aero land..
   ROS_INFO("Done");
   ros::shutdown();
 

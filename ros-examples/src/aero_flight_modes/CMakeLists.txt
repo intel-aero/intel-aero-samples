@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8.3)
 project(aero_flight_modes)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
-add_compile_options(-std=c++11 -g)
+add_compile_options(-std=c++11)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -21,7 +21,7 @@ catkin_package(
 ###########
 
 include_directories(
-				${catkin_INCLUDE_DIRS}
+  ${catkin_INCLUDE_DIRS}
 )
 
 add_executable(${PROJECT_NAME}_node
