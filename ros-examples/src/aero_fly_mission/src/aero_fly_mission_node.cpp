@@ -4,6 +4,14 @@
 * @author Shakthi Prashanth M <shakthi.prashanth.m@intel.com>
 * @version 0.0.1
 * @date 2017-09-06
+*
+* The example is summarised below:
+* 1. Gets waypoints from the QGroundControl mission plan (passed in command-line).
+* 2. Sends waypoints to the Aero.
+* 3. Sets Aero to MISSION mode. This makes Aero to execute the mission.
+* 4. Exits after the mission is accomplished.
+*
+* Before you run this example, plan your missions in QGroundControl & save them to a file.
 */
 
 #include <geometry_msgs/PoseStamped.h>
@@ -86,13 +94,13 @@ void getWaypointsFromQGCPlan(const std::string& qgc_plan_file, mavros_msgs::Wayp
   }
 }
 
-//  Callback that gets called periodically from MAVROS notifying FCU state
+//  Callback that gets called periodically from MAVROS notifying Aero FCU state
 void saveCurrentStateCB(const mavros_msgs::State::ConstPtr& msg, mavros_msgs::State* current_state)
 {
   *current_state = *msg;
 }
 
-// Callback that gets called periodically from MAVROS notifying Global Poistion of FCU
+// Callback that gets called periodically from MAVROS notifying Global Poistion of Aero FCU
 void setHomeGpsCB(const sensor_msgs::NavSatFixConstPtr& msg, sensor_msgs::NavSatFix* home_gps)
 {
   *home_gps = *msg;
@@ -104,7 +112,7 @@ int main(int argc, char** argv)
 {
   if (argc == 1)
   {
-    ROS_ERROR("Usage: rosrun mavros_fly_mission node <QGC waypoint plan>.json");
+    ROS_ERROR("Usage: roslaunch aero_fly_mission aero_fly_mission.launch file:=<Absolute path of QGroundControl plan>");
     return EXIT_FAILURE;
   }
   // Name of this Application node
@@ -112,7 +120,7 @@ int main(int argc, char** argv)
 
   ros::NodeHandle nh;
 
-  // Used for knowing FCU state, whether Armed ? or current flight mode, etc
+  // Used for knowing Aero FCU state, Arming status, ? or current flight mode, etc
   mavros_msgs::State current_state{};
 
   // FCU state subscription: See
@@ -143,7 +151,7 @@ int main(int argc, char** argv)
 
   ros::Rate rate(20.0);
 
-  ROS_INFO("Waiting for FCU Home GPS location to be set...");
+  ROS_INFO("Waiting for Aero FC Home to be set...");
   while (ros::ok() && !g_is_home_gps_set)
   {
     ros::spinOnce();
@@ -203,8 +211,8 @@ int main(int argc, char** argv)
     ros::shutdown();
   }
 
-  // Lets not overload FCU
-  ROS_INFO("Lets pause for 5 secs (to keep FCU at ease...)");
+  // Lets not overload Aero FCU
+  ROS_INFO("Lets pause for 5 secs (to keep Aero at ease...)");
   sleep(5.0);
   ROS_INFO("Resumed. Missions in execution...");
   bool armed = static_cast<int>(current_state.armed);
@@ -220,5 +228,5 @@ int main(int argc, char** argv)
   }
   ROS_INFO("Mission accomplished!");
 
-  return 0;
+  return EXIT_SUCCESS;
 }

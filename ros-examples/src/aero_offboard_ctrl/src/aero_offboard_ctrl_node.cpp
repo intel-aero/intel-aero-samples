@@ -3,6 +3,14 @@
  * @brief Aero Offboard Control example node, written with mavros version 0.21.2, px4 flight
  * stack and tested in Gazebo SITL & jMAVSIM.
  * Original source code: MAVROS OFFBOARD example from: https://dev.px4.io/en/ros/mavros_offboard.html
+ *
+ * This example is summariesed below:
+ * 1. Listens for state of the Aero Flight Controller.
+ * 2. Set offboard setpoint location before changing OFFBOARD (Otherwise mode switch will be rejected)
+ * 3. Switches to OFFBOARD mode.
+ * 4. When Aero Flight Controller goes to OFFBOARD mode, we continue publishing setpoint position with altitude of 2
+ * meters.
+ * 5. We keep receiving Aero FCU state callabck.
  */
 
 #include <ros/ros.h>
