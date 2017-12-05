@@ -2,7 +2,7 @@
 <package>
   <name>aero_offboard_velocity</name>
   <version>0.0.0</version>
-  <description>Demonstration of offboard velocity for Ned and body frames on Intel Aero</description>
+  <description>Demonstration of offboard velocity control in local NED and body coordinates using MAVROS on Int  el Aero</description>
 
   <maintainer email="padmashree.mandri@intel.com">Padmashree Mandri</maintainer>
 
