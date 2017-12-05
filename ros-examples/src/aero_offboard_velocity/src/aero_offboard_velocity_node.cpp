@@ -2,8 +2,7 @@
  * @file aero_offboard_velocity_node.cpp
  * @brief Demonstration of offboard velocity control in local NED and body
  * coordinates using MAVROS on Intel Aero, written with mavros version 0.14.2,
- * px4 flight
- * stack and tested in Gazebo SITL & jMAVSIM.
+ * PX4 flight stack and tested in Gazebo SITL & jMAVSIM.
  */
 
 #include <boost/thread/thread.hpp>
