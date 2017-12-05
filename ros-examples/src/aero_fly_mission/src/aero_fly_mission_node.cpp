@@ -33,7 +33,7 @@ namespace bpt = boost::property_tree;
 bool g_is_home_gps_set = false;
 
 // Parses QGroundControl Waypoint plan into MAVROS Waypoint list.
-void get_wp_list(const std::string& qgc_plan_file, mavros_msgs::WaypointPush* wp_list)
+void getWaypointsFromQGCPlan(const std::string& qgc_plan_file, mavros_msgs::WaypointPush* wp_list)
 {
   try
   {
@@ -87,17 +87,17 @@ void get_wp_list(const std::string& qgc_plan_file, mavros_msgs::WaypointPush* wp
 }
 
 //  Callback that gets called periodically from MAVROS notifying FCU state
-void save_current_state_cb(const mavros_msgs::State::ConstPtr& msg, mavros_msgs::State* pCurrentState)
+void saveCurrentStateCB(const mavros_msgs::State::ConstPtr& msg, mavros_msgs::State* current_state)
 {
-  *pCurrentState = *msg;
+  *current_state = *msg;
 }
 
 // Callback that gets called periodically from MAVROS notifying Global Poistion of FCU
-void set_home_gps_cb(const sensor_msgs::NavSatFixConstPtr& msg, sensor_msgs::NavSatFix* pHomeGps)
+void setHomeGpsCB(const sensor_msgs::NavSatFixConstPtr& msg, sensor_msgs::NavSatFix* home_gps)
 {
-  *pHomeGps = *msg;
+  *home_gps = *msg;
   g_is_home_gps_set = true;
-  ROS_INFO("Received Home: %lf, %lf, %lf", pHomeGps->latitude, pHomeGps->longitude, pHomeGps->altitude);
+  ROS_INFO("Received Home: %lf, %lf, %lf", home_gps->latitude, home_gps->longitude, home_gps->altitude);
 }
 
 int main(int argc, char** argv)
@@ -118,20 +118,20 @@ int main(int argc, char** argv)
   // FCU state subscription: See
   // http://docs.ros.org/api/mavros_msgs/html/msg/State.html
   ros::Subscriber state_sub =
-      nh.subscribe<mavros_msgs::State>("mavros/state", 10, boost::bind(save_current_state_cb, _1, &current_state));
+      nh.subscribe<mavros_msgs::State>("mavros/state", 10, boost::bind(saveCurrentStateCB, _1, &current_state));
 
   sensor_msgs::NavSatFix home_gps{};
 
   // FCU Home position: See http://docs.ros.org/api/sensor_msgs/html/msg/NavSatFix.html
   ros::Subscriber home_gps_sub = nh.subscribe<sensor_msgs::NavSatFix>("mavros/global_position/global", 10,
-                                                                      boost::bind(set_home_gps_cb, _1, &home_gps));
+                                                                      boost::bind(setHomeGpsCB, _1, &home_gps));
 
   // See http://docs.ros.org/api/mavros_msgs/html/msg/WaypointList.html
   mavros_msgs::WaypointPush wp_list{};
 
   try
   {
-    get_wp_list(argv[1], &wp_list);
+    getWaypointsFromQGCPlan(argv[1], &wp_list);
   }
   catch (std::exception const& e)
   {

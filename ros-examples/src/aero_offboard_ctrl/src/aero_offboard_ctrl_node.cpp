@@ -12,13 +12,13 @@
 #include <mavros_msgs/State.h>
 
 // Callback that gets called at a fixed rate reporting FCU state: connection state, armed, mode, etc.
-void print_state_cb(const mavros_msgs::State::ConstPtr& msg, mavros_msgs::State* pState)
+void printStateCB(const mavros_msgs::State::ConstPtr& msg, mavros_msgs::State* state)
 {
-  *pState = *msg;
+  *state = *msg;
 
-  bool connected = pState->connected;
-  bool armed = pState->armed;
-  std::string mode = pState->mode;
+  bool connected = state->connected;
+  bool armed = state->armed;
+  std::string mode = state->mode;
 
   ROS_INFO("******** Received state cb *********");
   ROS_INFO("%sconnected to PX4", connected ? "" : "Not ");
@@ -35,7 +35,7 @@ int main(int argc, char** argv)
   mavros_msgs::State current_state;
 
   ros::Subscriber state_sub =
-      nh.subscribe<mavros_msgs::State>("mavros/state", 10, boost::bind(print_state_cb, _1, &current_state));
+      nh.subscribe<mavros_msgs::State>("mavros/state", 10, boost::bind(printStateCB, _1, &current_state));
   ros::Publisher local_pos_pub = nh.advertise<geometry_msgs::PoseStamped>("mavros/setpoint_position/local", 10);
   ros::ServiceClient arming_client = nh.serviceClient<mavros_msgs::CommandBool>("mavros/cmd/arming");
   ros::ServiceClient set_mode_client = nh.serviceClient<mavros_msgs::SetMode>("mavros/set_mode");
